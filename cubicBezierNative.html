@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+        <script>
+            cubicBezier = function(p0, p1, p2, p3, t, pFinal) {
+                pFinal = pFinal || {};
+                pFinal.x = Math.pow(1 - t, 3) * p0.x + 
+                        Math.pow(1 - t, 2) * 3 * t * p1.x + 
+                        (1 - t) * 3 * t * t * p2.x + 
+                        t * t * t * p3.x;
+                pFinal.y = Math.pow(1 - t, 3) * p0.y + 
+                        Math.pow(1 - t, 2) * 3 * t * p1.y + 
+                        (1 - t) * 3 * t * t * p2.y + 
+                        t * t * t * p3.y;
+                return pFinal;
+            }
+          
+          window.onload = function(){
+        
+            var canvas = document.getElementById("canvas"),
+                context = canvas.getContext("2d"),
+                width = canvas.width = window.innerWidth,
+                height = canvas.height = window.innerHeight,
+                p0 = {
+                    x: 200,
+                    y: 400
+                },
+                p1 = {
+                    x: 600,
+                    y: 100
+                },
+                p2 = {
+                    x: 1000,
+                    y: 150
+                },
+                p3 = {
+                    x: 1200,
+                    y: 500
+                };
+
+             
+                context.beginPath();
+                context.arc(p0.x, p0.y, 4, 0, Math.PI * 2, false);
+                context.fill();
+                
+                context.beginPath();
+                context.arc(p1.x, p1.y, 4, 0, Math.PI * 2, false);
+                context.fill();
+                
+                context.beginPath();
+                context.arc(p2.x, p2.y, 4, 0, Math.PI * 2, false);
+                context.fill();
+                
+                context.beginPath();
+                context.arc(p3.x, p3.y, 4, 0, Math.PI * 2, false);
+                context.fill();
+
+
+                context.beginPath();
+                context.moveTo(p0.x, p0.y);
+                context.lineTo(p1.x, p1.y);
+                context.strokeStyle = "red"
+                context.stroke();
+
+                context.beginPath();
+                context.moveTo(p1.x, p1.y);
+                context.lineTo(p2.x, p2.y);
+                context.strokeStyle = "green"
+                context.stroke();
+
+                context.beginPath();
+                context.moveTo(p2.x, p2.y);
+                context.lineTo(p3.x, p3.y);
+                context.strokeStyle = "blue"
+                context.stroke();
+
+                var pFinal = {};
+
+                for(var t = 0; t <= 1; t += 0.1) {
+                    
+                    var pFinalPrev = {x:pFinal.x, y:pFinal.y};
+                    
+                    cubicBezier(p0, p1, p2, p3, t, pFinal);
+                    
+                    context.beginPath();
+                    console.log(pFinalPrev);
+                    console.log(pFinal);
+                    context.moveTo(pFinalPrev.x, pFinalPrev.y);
+                    context.lineTo(pFinal.x, pFinal.y);
+                    context.strokeStyle = "black"
+                    context.stroke();
+                    context.beginPath();
+                    context.arc(pFinal.x, pFinal.y, 1, 0, Math.PI * 2, false);
+                    context.stroke();
+                }
+          };
+          
+          
+
+
+          </script>
+</head>
+<body>
+
+  <canvas id="canvas" width="600" height="250" style="border:1px solid black;">
+
+</body>
+</html>
