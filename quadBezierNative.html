@@ -1,92 +1,94 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-        <script>
-            quadBezier = function(p0, p1, p2, t, pFinal) {
-                pFinal = pFinal || {};
-                pFinal.x = Math.pow(1 - t, 2) * p0.x + 
-                        (1 - t) * 2 * t * p1.x + 
-                        t * t * p2.x;
-                pFinal.y = Math.pow(1 - t, 2) * p0.y + 
-                        (1 - t) * 2 * t * p1.y + 
-                        t * t * p2.y;
-                return pFinal;
-            },
-          
-          window.onload = function(){
-        
-            var canvas = document.getElementById("canvas"),
-                context = canvas.getContext("2d"),
-                width = canvas.width = window.innerWidth,
-                height = canvas.height = window.innerHeight,
-                p0 = {
-                    x: 200,
-                    y: 400
-                },
-                p1 = {
-                    x: 600,
-                    y: 100
-                },
-                p2 = {
-                    x: 1000,
-                    y: 300
-                };
+    <script>
+        // the quadratic bezier function to calc points for beautiful curves
+        quadBezier = function (p0, p1, p2, t, pFinal) {
+            pFinal = pFinal || {};
+            pFinal.x = Math.pow(1 - t, 2) * p0.x +
+                (1 - t) * 2 * t * p1.x +
+                t * t * p2.x;
+            pFinal.y = Math.pow(1 - t, 2) * p0.y +
+                (1 - t) * 2 * t * p1.y +
+                t * t * p2.y;
+            return pFinal;
+        },
 
-             
+            window.onload = function () {
+
+                var canvas = document.getElementById("canvas"),
+                    context = canvas.getContext("2d"),
+                    // define points
+                    p0 = {
+                        x: 200,
+                        y: 400
+                    },
+                    p1 = {
+                        x: 600,
+                        y: 100
+                    },
+                    p2 = {
+                        x: 1000,
+                        y: 300
+                    };
+
+                // draw P0, P1, P2
                 context.beginPath();
                 context.arc(p0.x, p0.y, 4, 0, Math.PI * 2, false);
                 context.fill();
-                
+
                 context.beginPath();
                 context.arc(p1.x, p1.y, 4, 0, Math.PI * 2, false);
                 context.fill();
-                
+
                 context.beginPath();
                 context.arc(p2.x, p2.y, 4, 0, Math.PI * 2, false);
                 context.fill();
 
+                // draw line from P0 to P1
                 context.beginPath();
                 context.moveTo(p0.x, p0.y);
                 context.lineTo(p1.x, p1.y);
                 context.strokeStyle = "red"
                 context.stroke();
 
+                // draw line from P1 to P2
                 context.beginPath();
                 context.moveTo(p1.x, p1.y);
                 context.lineTo(p2.x, p2.y);
                 context.strokeStyle = "green"
                 context.stroke();
-                
+
                 var pFinal = {};
 
-                for(var t = 0; t <= 1; t += 0.1) {
-                    
-                    var pFinalPrev = {x:pFinal.x, y:pFinal.y};
-                    
+                for (var t = 0; t <= 1; t += 0.1) {
+
+                    // remember previous point
+                    var pFinalPrev = {x: pFinal.x, y: pFinal.y};
+
+                    // calc point
                     quadBezier(p0, p1, p2, t, pFinal);
-                    
+
+                    // draw current point
                     context.beginPath();
-                    console.log(pFinalPrev);
-                    console.log(pFinal);
+                    context.arc(pFinal.x, pFinal.y, 1, 0, Math.PI * 2, false);
+                    context.stroke();
+
+                    // draw line between previous point and current point
+                    context.beginPath();
                     context.moveTo(pFinalPrev.x, pFinalPrev.y);
                     context.lineTo(pFinal.x, pFinal.y);
                     context.strokeStyle = "black"
                     context.stroke();
-                    context.beginPath();
-                    context.arc(pFinal.x, pFinal.y, 1, 0, Math.PI * 2, false);
-                    context.stroke();
                 }
-          };
-          
-          
+            };
 
 
-          </script>
+    </script>
 </head>
 <body>
 
-  <canvas id="canvas" width="600" height="250" style="border:1px solid black;">
+<canvas id="canvas" width="600" height="250" style="border:1px solid black;">
 
 </body>
 </html>
